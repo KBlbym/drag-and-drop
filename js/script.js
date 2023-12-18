@@ -8,7 +8,7 @@ let categoryList = new Map();
 
 //Ordenar el array aleatoriamente
 data.sort((a,b) => {return .5 - Math.random() });
-let dataCopy = utils.take(4,data);
+let dataCopy = utils.take(10,data);
 dataCopy.forEach(item => {
     categoryList.set(item.category, item);
 });
