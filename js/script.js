@@ -1,14 +1,17 @@
-import  {data} from "./animals.js";
-import  {utils} from "./utils.js";
+import { data } from "./animals.js";
+import { utils } from "./utils.js";
 
 //Declaracion de los variales globales.
 let dragZone = document.getElementById("dragContainer");
 let dropZone = document.getElementById("dropContainer");
 let categoryList = new Map();
-
+let numberOfElementToRender = parseInt(prompt(`Introduce las cantidad de animales que quieres mostrar (0 a ${data.length})`));
+while (numberOfElementToRender > data.length) {
+    numberOfElementToRender = parseInt(prompt(`Introduce las cantidad de animales que quieres mostrar (0 a ${data.length})`));
+}
 //Ordenar el array aleatoriamente
-data.sort((a,b) => {return .5 - Math.random() });
-let dataCopy = utils.take(4,data);
+data.sort((a, b) => { return .5 - Math.random() });
+let dataCopy = utils.take(numberOfElementToRender ? numberOfElementToRender : 10, data);
 dataCopy.forEach(item => {
     categoryList.set(item.category, item);
 });
@@ -20,7 +23,7 @@ let categoriestags = document.querySelectorAll(".category-body");
 categoriestags.forEach(item => {
     //El evento si despara cuando el raton entra en el contenidor
     item.addEventListener("dragenter", dragEnter);
-    
+
     //El evento se dispara cuando se sale de contenidor
     item.addEventListener("dragleave", dragLeave);
 
@@ -31,11 +34,11 @@ categoriestags.forEach(item => {
 });
 //#region (Eventos de drag zone) 
 //El evento que se dispara cuando se empieza el dragable
-dragZone.addEventListener("dragstart", e =>{
+dragZone.addEventListener("dragstart", e => {
     e.dataTransfer.setData("id", e.target.id);
 });
 
- // Obtener todos los elementos con la clase img-item
+// Obtener todos los elementos con la clase img-item
 const dragItems = document.querySelectorAll('.img-item');
 
 // Asignar eventos táctiles a cada elemento
@@ -45,7 +48,7 @@ dragItems.forEach(item => {
     item.addEventListener('touchend', handleTouchEnd);
 });
 //El evento dragend si dispara cuando soltamos el elemento
-dragZone.addEventListener("dragend", e =>{
+dragZone.addEventListener("dragend", e => {
     e.preventDefault();
 });
 
@@ -58,12 +61,12 @@ function dragEnter(e) {
 
 function dragLeave(e) {
     e.target.classList.remove("dragover");
-    
+
 }
 function dragOver(e) {
     e.preventDefault();
     e.target.classList.add("dragover");
-    
+
 }
 function handleDrop(e) {
     let dropBox = e.currentTarget;
@@ -74,8 +77,8 @@ function handleDrop(e) {
 //#endregion
 
 //#region (Touch Events)
- // Función para manejar el inicio del arrastre táctil
- function handleTouchStart(e) {
+// Función <para manejar el inicio del arrastre táctil>
+function handleTouchStart(e) {
     const touch = e.touches[0];
     const target = touch.target;
 
@@ -108,26 +111,29 @@ function handleTouchMove(e) {
 function handleTouchEnd(e) {
     const touch = e.changedTouches[0];
     const dragElement = touch.target;
-    
+
     if (dragElement.draggable) {
         const dropZone = findDropZone(touch.clientX, touch.clientY);
-       endDrop(dragElement, dropZone);
+        endDrop(dragElement, dropZone);
     }
 }
 //#endregion
 //function para terminar el drop
 function endDrop(dragElement, dropZone) {
-     // Obtener el valor del atributo data-category
-     const categoria = dragElement.getAttribute("data-category");
-     if (categoria === dropZone?.id) {
-         dropZone.appendChild(dragElement);
-     }
-    let dragItemRest = dragZone.querySelectorAll(`.${dragElement.className}`);
-    if(dragItemRest.length <= 0){
-        utils.createElement("div", dragZone, [], "¡Has Ganado!", "success");
+    if (dropZone) {
+        // Obtener el valor del atributo data-category
+        const categoria = dragElement.getAttribute("data-category");
+        if (categoria === dropZone?.id) {
+            dropZone.appendChild(dragElement);
+        }
+        let dragItemRest = dragZone.querySelectorAll(`.${dragElement.className}`);
+        if (dragItemRest.length <= 0) {
+            utils.createElement("div", dragZone, [], "¡Has Ganado!", "success");
+        }
+        dropZone.classList.remove("dragover");
     }
-    dropZone.classList.remove("dragover");
     dragElement.style.transform = '';
+
 }
 // Función para encontrar la zona de destino del elemento
 function findDropZone(x, y) {
@@ -140,18 +146,3 @@ function findDropZone(x, y) {
     }
     return null;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
