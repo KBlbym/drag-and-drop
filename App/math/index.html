@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablas de operaciones matematicos</title>
+    <link rel="stylesheet" href="../../css/math.css">
+    
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Volver a inicio</a>
+        </nav>
+        <h1>Tablas de Multiplicación</h1>
+    </header>
+    <main id="main">
+        
+    </main>
+    <script>
+        let main = document.querySelector('#main');
+
+
+
+
+
+
+        for (let i = 1; i < 10 ; i++) {
+            let tabla = createElement("div", main, "", "tabla");
+            let row = createElement("div", tabla, "", "row");
+            for (let j = 0; j < 10; j++) {
+                createOperation("div", row, i, j);
+                
+            }
+             
+        }
+        function createOperation(tagName, parentElement, i, j) {
+            let col = createElement("div", parentElement, "", "col");
+            col.innerHTML = `<div class="operation"><span>${i}</span><span>x</span><span>${j}</span></div>`;
+            createElement("input", col, "", "col-child");
+        } 
+
+        function createElement(tagName, parentElement, value = "", className = null, id = null) {
+            let el = document.createElement(tagName);
+            value!=="" ? el.innerHTML = value : "";
+            className ? el.className = className :'';
+            parentElement.appendChild(el);
+            return el;
+        }
+    </script>
+</body>
+</html>
