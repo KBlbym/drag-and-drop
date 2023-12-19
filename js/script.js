@@ -10,8 +10,8 @@ while (numberOfElementToRender > data.length) {
     numberOfElementToRender = parseInt(prompt(`Introduce las cantidad de animales que quieres mostrar (0 a ${data.length})`));
 }
 //Ordenar el array aleatoriamente
-data.sort((a, b) => { return .5 - Math.random() });
-let dataCopy = utils.take(numberOfElementToRender ? numberOfElementToRender : 10, data);
+data.sort((a,b) => {return .5 - Math.random() });
+let dataCopy = utils.take(4,data);
 dataCopy.forEach(item => {
     categoryList.set(item.category, item);
 });
