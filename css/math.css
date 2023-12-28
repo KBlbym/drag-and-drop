@@ -37,6 +37,9 @@ main{
 }
 .col{
     display: flex;
+    padding-right: 5px;
+    font-size: 18px;
+
 }
 .row, .col > *{
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -48,4 +51,71 @@ input.col-child{
 }
 span{
     margin: 2px 5px;
+}
+.success{
+    background-color: rgb(121, 210, 121);
+    color:green;
+    border: solid 1px rgb(2, 67, 2);
+
+  }
+.danger{
+    background-color: rgb(250, 134, 134);
+    color:rgb(208, 9, 9);
+    border: solid 1px rgb(122, 3, 3);
+  }
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+  }
+  
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+  }
+  .btn{
+    display: flex;
+    margin: auto;
+    padding: 10px 20px;
+    background-color: #558cff;
+    color: white;
+    font-weight: bold;
+    border: #3e67c1;
+    border-radius: 10px;
+    cursor: pointer;
+
+  }
+  .col.success::after {
+    content: '\2714';
+    color: green;
+}
+.col.danger::after {
+    content: '\2716';
+    color: rgb(243, 0, 0);
 }

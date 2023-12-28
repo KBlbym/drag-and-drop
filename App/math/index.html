@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tablas de operaciones matematicos</title>
     <link rel="stylesheet" href="../../css/math.css">
-    
 </head>
+
 <body>
     <header>
         <nav>
@@ -15,38 +16,109 @@
         <h1>Tablas de Multiplicación</h1>
     </header>
     <main id="main">
-        
+
     </main>
     <script>
+        let rowsNumber = 10;
+        let correctAnswers = 0;
+        let incorrectAnswers = 0;
         let main = document.querySelector('#main');
-
-
-
-
-
-
-        for (let i = 1; i < 10 ; i++) {
+        for (let i = 1; i <= rowsNumber; i++) {
             let tabla = createElement("div", main, "", "tabla");
             let row = createElement("div", tabla, "", "row");
-            for (let j = 0; j < 10; j++) {
+            for (let j = 0; j <= rowsNumber; j++) {
                 createOperation("div", row, i, j);
-                
             }
-             
         }
+
         function createOperation(tagName, parentElement, i, j) {
-            let col = createElement("div", parentElement, "", "col");
+            let col = createElement("div", parentElement, "", "col", null, { name: "focusout", func: verifyInputValue });
             col.innerHTML = `<div class="operation"><span>${i}</span><span>x</span><span>${j}</span></div>`;
             createElement("input", col, "", "col-child");
-        } 
+        }
 
-        function createElement(tagName, parentElement, value = "", className = null, id = null) {
+        function createElement(tagName, parentElement, value = "", className = null, id = null, event = null) {
             let el = document.createElement(tagName);
-            value!=="" ? el.innerHTML = value : "";
-            className ? el.className = className :'';
+            value !== "" ? el.innerHTML = value : "";
+            className ? el.className = className : '';
+            id ? el.id = id : '';
+            if (event !== null) {
+                el.addEventListener(event.name, event.func);
+            }
             parentElement.appendChild(el);
             return el;
         }
+        function verifyInputValue(e) {
+            if (!correctAnswers && !incorrectAnswers) {
+                let header = document.querySelector("header");
+                createElement("button", header, "Ver resultados", "btn", "openModalBtn", { name: "click", func: showResult })
+            }
+            e.preventDefault();
+            const value = parseInt(e.target.value);
+            let childrenElements = e.currentTarget.firstChild.children;
+            const number1 = childrenElements[0].textContent;
+            const operator = childrenElements[1].textContent;
+            const number2 = childrenElements[2].textContent;
+            const result = calculate(number1, number2, operator);
+            if (!Number.isNaN(value)) {
+                if (result === value) {
+                    e.currentTarget.classList.remove("danger");
+                    e.currentTarget.classList.add("success");
+                    correctAnswers++;
+                } else {
+                    e.currentTarget.classList.remove("success");
+                    e.currentTarget.classList.add("danger");
+                    incorrectAnswers++;
+                }
+            }
+        }
+        function calculate(number1, number2, operator) {
+            switch (operator) {
+                case "x":
+                    return number1 * number2;
+                    break;
+                case "+":
+                    //TODO: return number1 + number2;
+                    break;
+                case "-":
+                    //TODO: return number1 - number2;
+                    break;
+
+                default:
+                    //TODO: return number1 / number2;
+                    break;
+            }
+        }
+
+        function showResult() {
+            const total = (rowsNumber + 1) * rowsNumber;
+            const nota = (((correctAnswers / total) * 100) / 10).toFixed(2);
+            var modal = document.getElementById('myModal');
+            var closeModal = document.getElementsByClassName('close')[0];
+            modal.style.display = 'block';
+            let content = modal.querySelector(".modal-body");
+            content.innerHTML =
+                `<p><strong>Aciertos: </strong>${correctAnswers}</p>
+            <p><strong>Fallos: </strong>${incorrectAnswers}</p>
+            <p><strong>Nota: </strong>${nota}</p>`;
+
+            closeModal.addEventListener('click', function () {
+                modal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function (event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+        }
     </script>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body"></div>
+        </div>
+    </div>
 </body>
 </html>
